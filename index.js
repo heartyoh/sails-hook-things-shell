@@ -60,38 +60,38 @@ module.exports = function (sails) {
     stats: 'errors-only'
   });
 
-  // Create webpack compiler
-  hook.compiler = webpack(options, (err, stats) => {
-    if (err) {
-      sails.log.error(package.name + ': Configuration error:\n', err);
-      return {};
-    }
-    sails.log.info(package.name + ': Webpack configured successfully.');
-    if (environment === 'production') {
-      sails.log.info(package.name + ': Building for production...');
-      hook.compiler.run(hook.afterBuild.bind(hook));
-    }
-    else {
-      sails.log.info(package.name + ': Watching for changes...');
-      hook.compiler.watch(sails.config.webpack.watch, hook.afterBuild.bind(hook));
-    }
-  });
+  // // Create webpack compiler
+  // hook.compiler = webpack(options, (err, stats) => {
+  //   if (err) {
+  //     sails.log.error(package.name + ': Configuration error:\n', err);
+  //     return {};
+  //   }
+  //   sails.log.info(package.name + ': Webpack configured successfully.');
+  //   if (environment === 'production') {
+  //     sails.log.info(package.name + ': Building for production...');
+  //     hook.compiler.run(hook.afterBuild.bind(hook));
+  //   }
+  //   else {
+  //     sails.log.info(package.name + ': Watching for changes...');
+  //     hook.compiler.watch(sails.config.webpack.watch, hook.afterBuild.bind(hook));
+  //   }
+  // });
 
-  // Start webpack-dev-server
-  if (environment !== 'production' && sails.config.webpack.server) {
-    const WebpackDevServer = require('webpack-dev-server');
-    // Webpack-dev-server configuration
-    let config = {
-      hot: true,
-      port: 3000
-    };
-    Object.assign(config, sails.config.webpack.server);
+  // // Start webpack-dev-server
+  // if (environment !== 'production' && sails.config.webpack.server) {
+  //   const WebpackDevServer = require('webpack-dev-server');
+  //   // Webpack-dev-server configuration
+  //   let config = {
+  //     hot: true,
+  //     port: 3000
+  //   };
+  //   Object.assign(config, sails.config.webpack.server);
 
-    // Listen on specific port
-    hook.server = new WebpackDevServer(hook.compiler, config);
-    hook.server.listen(config.port);
-    sails.log.info(package.name + ': Server listening on ' + baseUrl);
-  }
+  //   // Listen on specific port
+  //   hook.server = new WebpackDevServer(hook.compiler, config);
+  //   hook.server.listen(config.port);
+  //   sails.log.info(package.name + ': Server listening on ' + baseUrl);
+  // }
 
   return hook;
 };
